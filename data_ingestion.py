@@ -3,37 +3,39 @@ import os
 
 folder = "data/raw"
 
-csv_files = [file for file in os.listdir(folder) if file.endswith(".csv")]
+csv_files = sorted([f for f in os.listdir(folder) if f.endswith(".csv")])
 
 print(f"\nFound {len(csv_files)} CSV files.\n")
 
 for file in csv_files:
 
-    print("=" * 70)
-    print(f"File: {file}")
+    print("=" * 80)
+    print(f"FILE: {file}")
 
     path = os.path.join(folder, file)
 
-    df = pd.read_csv(path)
-    df["date"] = pd.to_datetime(df["date"], format="%d-%m-%Y")
-     print(df.dtypes)
-    print(df.dtypes)
-print(df.head())
-df["date"] = pd.to_datetime(df["date"])
+    try:
+        df = pd.read_csv(path)
 
-    print("\nShape:")
-    print(df.shape)
+        print("\nShape:")
+        print(df.shape)
 
-    print("\nData Types:")
-    print(df.dtypes)
+        print("\nColumns:")
+        print(df.columns.tolist())
 
-    print("\nFirst 5 Rows:")
-    print(df.head())
+        print("\nData Types:")
+        print(df.dtypes)
 
-    print("\nMissing Values:")
-    print(df.isnull().sum())
+        print("\nFirst 5 Rows:")
+        print(df.head())
 
-    print("\nDuplicate Rows:")
-    print(df.duplicated().sum())
+        print("\nMissing Values:")
+        print(df.isnull().sum())
 
-    print("=" * 70)
+        print("\nDuplicate Rows:")
+        print(df.duplicated().sum())
+
+    except Exception as e:
+        print("Error reading file:", e)
+
+    print("=" * 80)
